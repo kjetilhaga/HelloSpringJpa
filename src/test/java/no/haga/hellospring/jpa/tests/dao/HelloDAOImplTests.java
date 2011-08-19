@@ -5,10 +5,14 @@ import no.haga.hellospring.jpa.dao.HelloDAO;
 import no.haga.hellospring.jpa.domain.Post;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.DatabaseDataSourceConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
+import org.hibernate.dialect.Oracle10gDialect;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.io.Console;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -41,19 +47,16 @@ public class HelloDAOImplTests {
     @Autowired
     protected DataSource dataSource;
 
+    protected void loadFlatXmlDataSet(String dataSetResource, DataSource dataSource) throws DatabaseUnitException, SQLException {
+        InputStream resource = ClassLoader.getSystemResourceAsStream(dataSetResource);
+        IDataSet dataSet = new FlatXmlDataSetBuilder().build(resource);
+        IDatabaseConnection connection = new DatabaseDataSourceConnection(dataSource);
+        DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
+    }
 
     @BeforeTransaction
     public void beforeTransaction() throws DatabaseUnitException, IOException, SQLException {
-        Connection con = DataSourceUtils.getConnection(dataSource);
-        IDatabaseConnection dbUnitCon = new DatabaseConnection(con);
-        IDataSet dataSet = new XmlDataSet(this.getClass().getClassLoader().getResourceAsStream("datasets/initial.xml"));
-        try {
-            DatabaseOperation.CLEAN_INSERT.execute(dbUnitCon, dataSet);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            DataSourceUtils.releaseConnection(con, dataSource);
-        }
+        loadFlatXmlDataSet("datasets/testdata.xml", dataSource);
     }
 
     @Test

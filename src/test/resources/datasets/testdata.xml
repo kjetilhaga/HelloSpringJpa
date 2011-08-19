@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <POSTS post_id="1" subject="hello world" body="lorem ipsum..." posted="2011-08-19" />
+    <POSTS post_id="2" subject="hello spring" body="lorem ipsum..." posted="2011-08-20" />
+</dataset>

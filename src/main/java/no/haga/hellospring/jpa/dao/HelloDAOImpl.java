@@ -16,27 +16,23 @@ public class HelloDAOImpl implements HelloDAO {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Override
     @Transactional(readOnly = false)
     public void savePost(Post post) {
         entityManager.persist(post);
         entityManager.flush();
     }
 
-    @Override
     @Transactional(readOnly = true)
     public Post getPost(int id) {
         return entityManager.find(Post.class, id);
     }
 
-    @Override
     @Transactional(readOnly = true)
     public Post findBySubject(String subject) {
         TypedQuery<Post> query = entityManager.createQuery("from Post where subject = :subject", Post.class);
         return query.setParameter("subject", subject).getSingleResult();
     }
 
-    @Override
     @Transactional(readOnly = true)
     public Collection<Post> getAll() {
         TypedQuery<Post> query = entityManager.createQuery("from Post", Post.class);
