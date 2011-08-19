@@ -1,23 +1,16 @@
 package no.haga.hellospring.jpa.tests.dao;
 
-import net.sf.cglib.core.MethodWrapper;
 import no.haga.hellospring.jpa.dao.HelloDAO;
 import no.haga.hellospring.jpa.domain.Post;
 import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.DatabaseDataSourceConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
-import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
-import org.hibernate.dialect.Oracle10gDialect;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.BeforeTransaction;
@@ -25,15 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-import java.io.Console;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
