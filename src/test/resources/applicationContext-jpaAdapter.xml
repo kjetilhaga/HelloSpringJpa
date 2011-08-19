@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- enable property injection -->
+    <context:property-placeholder location="classpath:datasource.properties"/>
+
+    <!-- configure entity manager factory with jpa adapter-->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
+                  p:showSql="${hibernate.show_sql}"
+                  p:generateDdl="true"
+                  p:databasePlatform="${hibernate.dialect}"/>
+        </property>
+    </bean>
+
+    <!-- the datasource -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+          p:driverClassName="${dataSource.driverClassName}"
+          p:url="${dataSource.url}"
+          p:username="${dataSource.username}"
+          p:password="${dataSource.password}"/>
+
+    <!-- enable transaction support -->
+    <tx:annotation-driven/>
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+        p:entityManagerFactory-ref="entityManagerFactory"
+        p:dataSource-ref="dataSource"/>
+
+    <!-- scan components with annotations -->
+    <context:component-scan base-package="no.haga.hellospring.jpa"/>
+
+</beans>

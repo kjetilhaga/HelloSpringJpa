@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+
+    <persistence-unit name="hellospring-jpa" transaction-type="RESOURCE_LOCAL">
+        <!-- configured via spring -->
+    </persistence-unit>
+    
+</persistence>
